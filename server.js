@@ -5,15 +5,11 @@ var fs = require ("fs")
 var app = express();
 var PORT = process.env.PORT || 8000;
 
-var notes = fs.readFileSync("db/db.json", function(err, data){
+var notes = fs.readFile("db/db.json", function(err, data){
     if(err){
         throw err
     }
-    console.log(data);
-    return JSON.parse(data);
 });
-
-console.log(notes);
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
@@ -30,13 +26,11 @@ app.get("/notes", function(req, res){
 
 //server api
 app.get("/api/notes", function(req, res){
-   return res.send("I'm working");
+  return res.json(notes);
 });
 
 app.post("/api/notes", function(req,res){
     var entry = req.body;
-    entry.routeName = entry.name.replace(/\s/g, "").toLowerCase();
-    console.log(entry);
     fs.appendFile("db/db.json", entry);
 });
 
