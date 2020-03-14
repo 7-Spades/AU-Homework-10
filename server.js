@@ -5,10 +5,11 @@ var fs = require ("fs")
 var app = express();
 var PORT = process.env.PORT || 8000;
 
-var notes = fs.readFile("db/db.json", function(err, data){
+var notes = fs.readFileSync("db/db.json", function(err, data){
     if(err){
         throw err
     }
+    JSON.stringify(notes)
 });
 
 app.use(express.urlencoded({extended: true}));
@@ -26,12 +27,13 @@ app.get("/notes", function(req, res){
 
 //server api
 app.get("/api/notes", function(req, res){
-  return res.json(notes);
+    res.setHeader("Content-Type", "application/json");
+    res.end(notes)
 });
 
 app.post("/api/notes", function(req,res){
     var entry = req.body;
-    fs.appendFile("db/db.json", entry);
+    
 });
 
 //server listener
