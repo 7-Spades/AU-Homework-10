@@ -32,8 +32,9 @@ app.get("/api/notes", function(req, res){
 });
 
 app.post("/api/notes", function(req,res){
-    var entry = req.body;
-    
+    var entry = JSON.stringify(req.body);
+    console.log(entry);
+    fs.appendFileSync("db/db.json", entry);
 });
 
 //server listener
